@@ -27,6 +27,8 @@ public class Task {
 	@Getter
 	@Setter
 	private LocalDate targetDate;
+	@Getter
+	@Setter
 	@ManyToOne
 	private ToDoList toDoList;
 

@@ -36,6 +36,15 @@ public class ToDoListController {
 		return ToDoListDto.converter(toDoLists);
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<ToDoListDto> detailToDoList(@PathVariable Long id) {
+		Optional<ToDoList> toDoList = toDoListRepository.findById(id);
+		if (toDoList.isPresent()) {
+			return ResponseEntity.ok(new ToDoListDto(toDoList.get()));
+		}
+		return ResponseEntity.notFound().build();
+	}
+
 	@Transactional
 	@PostMapping
 	public ResponseEntity<ToDoListDto> insertToDoList(@RequestBody @Valid ToDoListForm form,

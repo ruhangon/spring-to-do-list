@@ -28,6 +28,8 @@ public class ToDoList {
 	@Getter
 	@Setter
 	private String description;
+	@Getter
+	@Setter
 	@OneToMany(mappedBy = "toDoList")
 	private List<Task> tasks = new ArrayList<>();
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.example.todolist.controller.dto.DetailedTaskDto;
 import com.example.todolist.controller.dto.TaskDto;
 import com.example.todolist.controller.form.TaskForm;
 import com.example.todolist.controller.form.UpdateTaskForm;
@@ -46,6 +47,15 @@ public class TaskController {
 			List<Task> tasks = taskRepository.findByTargetDate(targetDate);
 			return TaskDto.converter(tasks);
 		}
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<DetailedTaskDto> detailTask(@PathVariable Long id) {
+		Optional<Task> task = taskRepository.findById(id);
+		if (task.isPresent()) {
+			return ResponseEntity.ok(new DetailedTaskDto(task.get()));
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 	@Transactional
