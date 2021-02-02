@@ -1,6 +1,7 @@
 package com.example.todolist.controller;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +38,14 @@ public class TaskController {
 	private ToDoListRepository toDoListRepository;
 
 	@GetMapping
-	public List<TaskDto> listTasks() {
-		List<Task> tasks = taskRepository.findAll();
-		return TaskDto.converter(tasks);
+	public List<TaskDto> listTasks(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate targetDate) {
+		if (targetDate == null) {
+			List<Task> tasks = taskRepository.findAll();
+			return TaskDto.converter(tasks);
+		} else {
+			List<Task> tasks = taskRepository.findByTargetDate(targetDate);
+			return TaskDto.converter(tasks);
+		}
 	}
 
 	@Transactional
